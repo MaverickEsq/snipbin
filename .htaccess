@@ -1,0 +1,7 @@
+Options +FollowSymLinks
+RewriteEngine On
+
+#RewriteCond %{QUERY_STRING} "^!(inc|img|files)/{0,1}(.*)"
+#RewriteRule ^(.*) index.php?c=$1 [L,NC]
+RewriteRule ^(?!assets|scripts|index\.php)(.*) index.php?s=$1
+

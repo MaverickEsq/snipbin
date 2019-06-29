@@ -46,26 +46,44 @@ $path .= 'scripts/';
 					?>
 				</ul>
 			</div>
-			<div id="code"><pre><code>print "hello world";</code></pre>
+			<div id="code"><pre><code><?php
+				if ($_GET['s']  != '') {
+					if (file_exists('scripts/' . $_GET['s'])) {
+						$file = file_get_contents('scripts/'.$_GET['s']);
+						print str_replace('<', '&lt;', $file);
+					}
+				} else { print 'print "hello world";'; }
+				?></code></pre>
 			</div>
 		</div>
 		<script type="text/javascript">
 			// set 'snippet' as the pre in code in div with class code
 			let snippet = document.querySelector('#code pre code');
 		    // locate your element and add the Click Event Listener
-		    document.getElementById('filelist').addEventListener("click",function(e) {
+		    document.getElementById('filelist').addEventListener("click", changeScript);
+		    function changeScript(e) {
 		        // e.target is our targetted element.
-		                    // try doing console.log(e.target.nodeName), it will result LI
+		        // try doing console.log(e.target.nodeName), it will result LI
 		        if(e.target && e.target.nodeName == "LI") {
-		            console.log(e.target.getAttribute("href") + " was clicked");
+		            console.log(e.target.textContent + " was clicked");
 		        	fetch(e.target.getAttribute("href"), {headers: new Headers({'X-Requested-With': 'XMLHttpRequest'})})
 					.then(response => response.text()).then(text => {
 						snippet.innerHTML = text.replace(/</g, '&lt;');
 						snippet.removeAttribute("class");
 						hljs.highlightBlock(snippet);
+						window.history.pushState('script change', 'Snippets', '/snippets/' + e.target.textContent);
 					});
 		        }
-		    });
+		    }
+
+		    function getUrlParam(parameter, defaultvalue){
+			    var urlparameter = defaultvalue;
+			    if(window.location.href.indexOf(parameter) > -1){
+			        urlparameter = getUrlVars()[parameter];
+			        }
+			    return urlparameter;
+			}
+
 		</script>
 	</body>
 </html>
