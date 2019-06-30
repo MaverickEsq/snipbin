@@ -50,7 +50,7 @@ $path .= 'scripts/';
 				if ($_GET['s']  != '') {
 					if (file_exists('scripts/' . $_GET['s'])) {
 						$file = file_get_contents('scripts/'.$_GET['s']);
-						print str_replace('<', '&lt;', $file);
+						print str_replace('	', '  ', str_replace('<', '&lt;', $file));
 					}
 				} else { print 'print "hello world";'; }
 				?></code></pre>
@@ -69,21 +69,13 @@ $path .= 'scripts/';
 		        	fetch(e.target.getAttribute("href"), {headers: new Headers({'X-Requested-With': 'XMLHttpRequest'})})
 					.then(response => response.text()).then(text => {
 						snippet.innerHTML = text.replace(/</g, '&lt;');
+						snippet.innerHTML = text.replace(/	/g, '  ');
 						snippet.removeAttribute("class");
 						hljs.highlightBlock(snippet);
 						window.history.pushState('script change', 'Snippets', '/snippets/' + e.target.textContent);
 					});
 		        }
 		    }
-
-		    function getUrlParam(parameter, defaultvalue){
-			    var urlparameter = defaultvalue;
-			    if(window.location.href.indexOf(parameter) > -1){
-			        urlparameter = getUrlVars()[parameter];
-			        }
-			    return urlparameter;
-			}
-
 		</script>
 	</body>
 </html>
