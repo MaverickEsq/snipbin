@@ -68,8 +68,7 @@ $path .= 'scripts/';
 		            console.log(e.target.textContent + " was clicked");
 		        	fetch(e.target.getAttribute("href"), {headers: new Headers({'X-Requested-With': 'XMLHttpRequest'})})
 					.then(response => response.text()).then(text => {
-						snippet.innerHTML = text.replace(/</g, '&lt;');
-						snippet.innerHTML = text.replace(/	/g, '  ');
+						snippet.innerHTML = text.replace(/</g, '&lt;').replace(/	/g, '  ');
 						snippet.removeAttribute("class");
 						hljs.highlightBlock(snippet);
 						window.history.pushState('script change', 'Snippets', '/snippets/' + e.target.textContent);
