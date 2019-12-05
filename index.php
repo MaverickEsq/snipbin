@@ -1,4 +1,5 @@
 <?php
+clearstatcache();
 $show_path = 1;
 $show_dotdirs = 1;
 
@@ -27,8 +28,8 @@ $path .= 'scripts/';
 
 						$dir = dir($path);
 						while ($entry = $dir->read()) {
-						    if ($entry != '.') {
-						        if (is_dir($entry)) {
+						    if ($entry != '.' && $entry != '.htaccess') {
+						        if (is_dir($path . $entry)) {
 						            if (($entry != '..') or $show_dotdirs){
 						                $dirs[] = $entry;
 						            }
@@ -53,7 +54,10 @@ $path .= 'scripts/';
 						print str_replace('	', '  ', str_replace('<', '&lt;', $file));
 					}
 				} else { print 'print "hello world";'; }
-				?></code></pre>
+				?>
+				</code>
+
+				</pre>
 			</div>
 		</div>
 		<script type="text/javascript">
@@ -68,7 +72,7 @@ $path .= 'scripts/';
 		            console.log(e.target.textContent + " was clicked");
 		        	fetch(e.target.getAttribute("href"), {headers: new Headers({'X-Requested-With': 'XMLHttpRequest'})})
 					.then(response => response.text()).then(text => {
-						snippet.innerHTML = text.replace(/</g, '&lt;').replace(/	/g, '  ');
+						snippet.innerHTML = text.replace(/</g, '&lt;').replace(/	/g, '  ') + "\n\n";
 						snippet.removeAttribute("class");
 						hljs.highlightBlock(snippet);
 						window.history.pushState('script change', 'Snippets', '/snippets/' + e.target.textContent);
