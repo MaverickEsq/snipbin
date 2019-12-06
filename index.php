@@ -17,8 +17,10 @@ $root = dirname($_SERVER['SCRIPT_NAME']) . '/';
 			function toggle(e) {
 				if (e.parentElement.getElementsByTagName("UL")[0].style.display === "none") {
 					e.parentElement.getElementsByTagName("UL")[0].style.display = "block";
+					e.parentElement.getElementsByTagName("SPAN")[0].className = "shown";
 				} else {
 					e.parentElement.getElementsByTagName("UL")[0].style.display = "none";
+					e.parentElement.getElementsByTagName("SPAN")[0].className = "hidden";
 				}
 			}
 		</script>

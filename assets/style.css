@@ -181,3 +181,30 @@ a {
     content: "\21b3";
     font-size: 0.8em;
 }
+
+.dir>ul>li>ul {
+	display: none;
+}
+.dir>ul>li>span::after {
+	content:"+";
+	float: right;
+	margin-right: -0.5em;
+}
+
+.dir span::after {
+	content:"-";
+	float: right;
+	margin-right: -0.5em;
+}
+
+.shown::after {
+	content:"-" !important;
+	float: right;
+	margin-right: -0.5em;
+}
+
+.hidden::after {
+	content:"+";
+	float: right;
+	margin-right: -0.5em;
+}
