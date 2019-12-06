@@ -46,7 +46,7 @@ $path .= 'scripts/';
 
 						sort($dirs);
 						foreach ($dirs as $idir) {
-							printf('<li class="dir"><img src="%s/assets/dir.png" class="diricon"/>%s<ul>', $root, $idir);
+							printf('<li class="dir"><img src="%sassets/dir.png" class="diricon"/>%s<ul>', $root, $idir);
 							$dir = dir($path . $idir);
 							while ($entry = $dir->read()) {
 								if (is_file($path . $idir . '/' . $entry)) {
@@ -62,6 +62,7 @@ $path .= 'scripts/';
 						}
 						?>
 				</ul>
+				<span class="brand"><a href="https://github.com/MaverickEsq/snipbin">snipbin by <img src="/favicon.ico"></a></span>
 			</div>
 			<div id="code"><pre><code><?php
 				if ($_GET['s']  != '') {
