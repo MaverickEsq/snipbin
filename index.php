@@ -34,7 +34,7 @@ $root = dirname($_SERVER['SCRIPT_NAME']) . '/';
 							$entries = array_slice(scandir($path), 2);
 							foreach ($entries as $entry) {
 							    if (is_dir($path . $entry) && $entry != '..' && $entry != '.') {
-							    	printf('<li class="dir"><img src="%sassets/dir.png" class="diricon"/><span onclick="toggle(this)" style="display:inline-block;width:90%%;">%s</span><ul>', $root, $entry);
+							    	printf('<li class="dir"><img src="%sassets/dir.png" class="diricon"/><span onclick="toggle(this)" style="display:inline-block;width:80%%;">%s</span><ul>', $root, $entry);
 							    	dirlist($path . $entry . '/');
 							    	print('</ul></li>');
 							    }

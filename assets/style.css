@@ -176,3 +176,8 @@ a {
 	border: 1px solid #1d1d1d;
 	padding-bottom: 0;
 }
+
+.dir li::before {
+    content: "\21b3";
+    font-size: 0.8em;
+}
