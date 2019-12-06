@@ -15,7 +15,7 @@ $root = dirname($_SERVER['SCRIPT_NAME']) . '/';
 		<link rel="stylesheet" href="<?= $root ?>assets/style.css">
 		<script>
 			function toggle(e) {
-				if (e.parentElement.getElementsByTagName("UL")[0].style.display === "none") {
+				if (e.parentElement.getElementsByTagName("UL")[0].style.display === "none" ||getComputedStyle(e.parentElement.getElementsByTagName("UL")[0], null).display === "none") {
 					e.parentElement.getElementsByTagName("UL")[0].style.display = "block";
 					e.parentElement.getElementsByTagName("SPAN")[0].className = "shown";
 				} else {
