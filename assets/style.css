@@ -204,7 +204,7 @@ a {
 }
 
 .hidden::after {
-	content:"+";
+	content:"+" !important;
 	float: right;
 	margin-right: -0.5em;
 }
