@@ -1,21 +1,24 @@
 <?php
-clearstatcache();
-$show_path = 1;
-$show_dotdirs = 1;
+// Uncomment if you're having caching issues
+//clearstatcache();
+// Webroot use / for blank or otherwise whatever is after
+// the tld on your setup
+$root = dirname($_SERVER['SCRIPT_NAME']) . '/';
 
 $path = substr($_SERVER['SCRIPT_FILENAME'], 0,
     strrpos($_SERVER['SCRIPT_FILENAME'], '/') + 1);
 $path .= 'scripts/';
 ?>
-<html ml-update="aware">
+<!DOCTYPE html>
+<html>
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
-		<link href="assets/favicon.png" type="image/png" rel="icon">
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<link href="<?= $root ?>assets/favicon.png" type="image/png" rel="icon">
 		<title>Snippets</title>
-		<link rel="stylesheet" href="assets/monokai-sublime.min.css">
-		<script charset="UTF-8" src="assets/highlight.pack.js"></script>
+		<link rel="stylesheet" href="<?= $root ?>assets/monokai-sublime.min.css">
+		<script charset="UTF-8" src="<?= $root ?>assets/highlight.pack.js"></script>
 		<script>hljs.initHighlightingOnLoad();</script>
-		<link rel="stylesheet" href="assets/style.css">
+		<link rel="stylesheet" href="<?= $root ?>assets/style.css">
 	</head>
 	<body>
 		<div id="wrapper">
@@ -30,7 +33,7 @@ $path .= 'scripts/';
 						while ($entry = $dir->read()) {
 						    if ($entry != '.' && $entry != '.htaccess') {
 						        if (is_dir($path . $entry)) {
-						            if (($entry != '..') or $show_dotdirs){
+						            if ($entry != '..'){
 						                $dirs[] = $entry;
 						            }
 						        } else {
@@ -39,18 +42,31 @@ $path .= 'scripts/';
 						    }
 						}
 						$dir->close();
+						unset($dir);
 
+						sort($dirs);
+						foreach ($dirs as $idir) {
+							printf('<li class="dir"><img src="%s/assets/dir.png" class="diricon"/>%s<ul>', $root, $idir);
+							$dir = dir($path . $idir);
+							while ($entry = $dir->read()) {
+								if (is_file($path . $idir . '/' . $entry)) {
+									printf('<li class="snippet" href="%sscripts/%s">&#8627;%s<a href="%sscripts/%s" download><img id="download" src="%sassets/download.png" /></a></li>' . "\n", $root, $idir . '/' . $entry, $entry, $root, $idir . '/' . $entry, $root);
+								}
+							}
+							$dir->close();
+							print('</ul></li>');
+						}
 						sort($files);
 						foreach ($files as $file) {
-						    printf('<li class="snippet" href="scripts/%s">%s<a href="scripts/%s" download><img id="download" src="assets/download.png" /></a></li>' . "\n", $file, $file, $file);
+						    printf('<li class="snippet" href="%sscripts/%s">%s<a href="%sscripts/%s" download><img id="download" src="%sassets/download.png" /></a></li>' . "\n", $root, $file, $file, $root, $file, $root);
 						}
-					?>
+						?>
 				</ul>
 			</div>
 			<div id="code"><pre><code><?php
 				if ($_GET['s']  != '') {
-					if (file_exists('scripts/' . $_GET['s'])) {
-						$file = file_get_contents('scripts/'.$_GET['s']);
+					if (file_exists('./scripts/' . $_GET['s'])) {
+						$file = file_get_contents('./scripts/'.$_GET['s']);
 						print str_replace('	', '  ', str_replace('<', '&lt;', $file));
 					}
 				} else { print 'print "hello world";'; }
@@ -69,15 +85,17 @@ $path .= 'scripts/';
 		        // e.target is our targetted element.
 		        // try doing console.log(e.target.nodeName), it will result LI
 		        if(e.target && e.target.nodeName == "LI") {
-		            console.log(e.target.textContent + " was clicked");
-		        	fetch(e.target.getAttribute("href"), {headers: new Headers({'X-Requested-With': 'XMLHttpRequest'})})
-					.then(response => response.text()).then(text => {
-						snippet.innerHTML = text.replace(/</g, '&lt;').replace(/	/g, '  ') + "\n\n";
-						snippet.removeAttribute("class");
-						hljs.highlightBlock(snippet);
-						window.history.pushState('script change', 'Snippets', '/snippets/' + e.target.textContent);
-					});
-		        }
+		        	if (e.target.getAttribute("class") != 'dir') {
+			            console.log(e.target.textContent + " was clicked");
+			        	fetch(e.target.getAttribute("href"), {headers: new Headers({'X-Requested-With': 'XMLHttpRequest'})})
+						.then(response => response.text()).then(text => {
+							snippet.innerHTML = text.replace(/</g, '&lt;').replace(/	/g, '  ') + "\n\n";
+							snippet.removeAttribute("class");
+							hljs.highlightBlock(snippet);
+							window.history.pushState('script change', 'Snippets', e.target.getAttribute("href").replace('/scripts', ''));
+						});
+			        }
+		    	}
 		    }
 		</script>
 	</body>

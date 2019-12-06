@@ -79,3 +79,23 @@ a {
 #download:hover{
 	opacity: 0.6;
 }
+
+.diricon {
+	height:0.6em;
+	padding-right: 3px;
+}
+
+.dir {
+	padding-top: 0.1em;
+	padding-bottom: 0.2em;
+	font-weight: bold;
+	padding-right: 0.2em;
+}
+
+.snippet {
+	font-weight: normal;
+}
+
+.dir:hover {
+	opacity: 1;
+}
