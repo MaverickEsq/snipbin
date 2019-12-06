@@ -160,6 +160,18 @@ a {
   background: #c0c0c0; 
 }
 
+#code::-webkit-scrollbar {
+  width: 5px;
+}
+ 
+#code::-webkit-scrollbar-thumb {
+  background: #1d1d1d; 
+}
+
+#code::-webkit-scrollbar-track {
+  background: #c0c0c0; 
+}
+
 .dir ul {
 	border: 1px solid #1d1d1d;
 	padding-bottom: 0;

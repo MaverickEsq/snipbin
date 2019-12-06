@@ -1,13 +1,6 @@
 <?php
 // Uncomment if you're having caching issues
 //clearstatcache();
-// Webroot use / for blank or otherwise whatever is after
-// the tld on your setup
-$root = dirname($_SERVER['SCRIPT_NAME']) . '/';
-
-$path = substr($_SERVER['SCRIPT_FILENAME'], 0,
-    strrpos($_SERVER['SCRIPT_FILENAME'], '/') + 1);
-$path .= 'scripts/';
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,6 +12,15 @@ $path .= 'scripts/';
 		<script charset="UTF-8" src="<?= $root ?>assets/highlight.pack.js"></script>
 		<script>hljs.initHighlightingOnLoad();</script>
 		<link rel="stylesheet" href="<?= $root ?>assets/style.css">
+		<script>
+			function toggle(e) {
+			  if (e.getElementsByTagName("UL")[0].style.display === "none") {
+			    e.getElementsByTagName("UL")[0].style.display = "block";
+			  } else {
+			    e.getElementsByTagName("UL")[0].style.display = "none";
+			  }
+			}
+		</script>
 	</head>
 	<body>
 		<div id="wrapper">
@@ -26,41 +28,26 @@ $path .= 'scripts/';
 				<span class="head">Snippets {}</span>
 				<ul id="filelist">
 					<?php
-						$dirs = array();
-						$files = array();
-
-						$dir = dir($path);
-						while ($entry = $dir->read()) {
-						    if ($entry != '.' && $entry != '.htaccess') {
-						        if (is_dir($path . $entry)) {
-						            if ($entry != '..'){
-						                $dirs[] = $entry;
-						            }
-						        } else {
-						            $files[] = $entry;
-						        }
-						    }
-						}
-						$dir->close();
-						unset($dir);
-
-						sort($dirs);
-						// Could make this recursive for endless dirs
-						foreach ($dirs as $idir) {
-							printf('<li class="dir"><img src="%sassets/dir.png" class="diricon"/>%s<ul>', $root, $idir);
-							$dir = dir($path . $idir);
-							while ($entry = $dir->read()) {
-								if (is_file($path . $idir . '/' . $entry)) {
-									printf('<li class="snippet" href="%sscripts/%s">&#8627;%s<a href="%sscripts/%s" download><img id="download" src="%sassets/download.png" /></a></li>' . "\n", $root, $idir . '/' . $entry, $entry, $root, $idir . '/' . $entry, $root);
-								}
+						function dirlist($path) {
+							$root = dirname($_SERVER['SCRIPT_NAME']) . '/';
+							$entries = array_slice(scandir($path), 2);
+							foreach ($entries as $entry) {
+							    if (is_dir($path . $entry) && $entry != '..' && $entry != '.') {
+							    	printf('<li class="dir" onclick="toggle(this)"><img src="%sassets/dir.png" class="diricon"/>%s<ul>', $root, $entry);
+							    	dirlist($path . $entry . '/');
+							    	print('</ul></li>');
+							    }
 							}
-							$dir->close();
-							print('</ul></li>');
+							foreach ($entries as $entry) {
+								if (is_file($path . $entry)) {
+						        	if ($entry != '.htaccess') {
+						            	printf('<li class="snippet" href="%s">%s<a href="%s" download><img id="download" src="%sassets/download.png" /></a></li>' . "\n", $root . $path . $entry, $entry, $root . $path . $entry, $root);
+						            }
+							    }
+							}
 						}
-						sort($files);
-						foreach ($files as $file) {
-						    printf('<li class="snippet" href="%sscripts/%s">%s<a href="%sscripts/%s" download><img id="download" src="%sassets/download.png" /></a></li>' . "\n", $root, $file, $file, $root, $file, $root);
-						}
+						dirlist('scripts/');
+
 						?>
 				</ul>
 				<span class="brand"><a href="https://github.com/MaverickEsq/snipbin">snipbin by <img src="<?= $root ?>assets/favicon.ico"></a></span>
@@ -96,7 +83,7 @@ $path .= 'scripts/';
 							snippet.innerHTML = text.replace(/</g, '&lt;').replace(/	/g, '  ') + "\n\n\n";
 							snippet.removeAttribute("class");
 							hljs.highlightBlock(snippet);
-							window.history.pushState('script change', 'Snippets', e.target.getAttribute("href").replace('/scripts', ''));
+							window.history.pushState('script change', 'Snippets', e.target.getAttribute("href").replace('scripts/', ''));
 						});
 			        }
 		    	}
