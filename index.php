@@ -14,11 +14,11 @@
 		<link rel="stylesheet" href="<?= $root ?>assets/style.css">
 		<script>
 			function toggle(e) {
-			  if (e.getElementsByTagName("UL")[0].style.display === "none") {
-			    e.getElementsByTagName("UL")[0].style.display = "block";
-			  } else {
-			    e.getElementsByTagName("UL")[0].style.display = "none";
-			  }
+				if (e.parentElement.getElementsByTagName("UL")[0].style.display === "none") {
+					e.parentElement.getElementsByTagName("UL")[0].style.display = "block";
+				} else {
+					e.parentElement.getElementsByTagName("UL")[0].style.display = "none";
+				}
 			}
 		</script>
 	</head>
@@ -33,7 +33,7 @@
 							$entries = array_slice(scandir($path), 2);
 							foreach ($entries as $entry) {
 							    if (is_dir($path . $entry) && $entry != '..' && $entry != '.') {
-							    	printf('<li class="dir" onclick="toggle(this)"><img src="%sassets/dir.png" class="diricon"/>%s<ul>', $root, $entry);
+							    	printf('<li class="dir"><img src="%sassets/dir.png" class="diricon"/><span onclick="toggle(this)">%s</span><ul>', $root, $entry);
 							    	dirlist($path . $entry . '/');
 							    	print('</ul></li>');
 							    }
