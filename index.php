@@ -45,6 +45,7 @@ $path .= 'scripts/';
 						unset($dir);
 
 						sort($dirs);
+						// Could make this recursive for endless dirs
 						foreach ($dirs as $idir) {
 							printf('<li class="dir"><img src="%sassets/dir.png" class="diricon"/>%s<ul>', $root, $idir);
 							$dir = dir($path . $idir);
@@ -62,7 +63,7 @@ $path .= 'scripts/';
 						}
 						?>
 				</ul>
-				<span class="brand"><a href="https://github.com/MaverickEsq/snipbin">snipbin by <img src="/favicon.ico"></a></span>
+				<span class="brand"><a href="https://github.com/MaverickEsq/snipbin">snipbin by <img src="<?= $root ?>assets/favicon.ico"></a></span>
 			</div>
 			<div id="code"><pre><code><?php
 				if ($_GET['s']  != '') {
