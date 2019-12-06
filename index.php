@@ -33,9 +33,9 @@ $root = dirname($_SERVER['SCRIPT_NAME']) . '/';
 					<?php
 						function dirlist($path) {
 							$root = dirname($_SERVER['SCRIPT_NAME']) . '/';
-							$entries = array_slice(scandir($path), 2);
+							$entries = array_diff(scandir($path), array('..', '.', '.htaccess'));
 							foreach ($entries as $entry) {
-							    if (is_dir($path . $entry) && $entry != '..' && $entry != '.') {
+							    if (is_dir($path . $entry)) {
 							    	printf('<li class="dir"><img src="%sassets/dir.png" class="diricon"/><span onclick="toggle(this)" style="display:inline-block;width:80%%;">%s</span><ul>', $root, $entry);
 							    	dirlist($path . $entry . '/');
 							    	print('</ul></li>');
@@ -43,9 +43,7 @@ $root = dirname($_SERVER['SCRIPT_NAME']) . '/';
 							}
 							foreach ($entries as $entry) {
 								if (is_file($path . $entry)) {
-						        	if ($entry != '.htaccess') {
-						            	printf('<li class="snippet" href="%s">%s<a href="%s" download><img id="download" src="%sassets/download.png" /></a></li>' . "\n", $root . $path . $entry, $entry, $root . $path . $entry, $root);
-						            }
+					            	printf('<li class="snippet" href="%s">%s<a href="%s" download><img id="download" src="%sassets/download.png" /></a></li>' . "\n", $root . $path . $entry, $entry, $root . $path . $entry, $root);
 							    }
 							}
 						}
