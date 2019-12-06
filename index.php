@@ -70,6 +70,8 @@ $path .= 'scripts/';
 					if (file_exists('./scripts/' . $_GET['s'])) {
 						$file = file_get_contents('./scripts/'.$_GET['s']);
 						print str_replace('	', '  ', str_replace('<', '&lt;', $file));
+					} else {
+						print "File not found";
 					}
 				} else { print 'print "hello world";'; }
 				?>
@@ -91,7 +93,7 @@ $path .= 'scripts/';
 			            console.log(e.target.textContent + " was clicked");
 			        	fetch(e.target.getAttribute("href"), {headers: new Headers({'X-Requested-With': 'XMLHttpRequest'})})
 						.then(response => response.text()).then(text => {
-							snippet.innerHTML = text.replace(/</g, '&lt;').replace(/	/g, '  ') + "\n\n";
+							snippet.innerHTML = text.replace(/</g, '&lt;').replace(/	/g, '  ') + "\n\n\n";
 							snippet.removeAttribute("class");
 							hljs.highlightBlock(snippet);
 							window.history.pushState('script change', 'Snippets', e.target.getAttribute("href").replace('/scripts', ''));
