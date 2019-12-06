@@ -29,7 +29,9 @@ code {
 
 #code {
 	width:100%;
-	    height:100%;
+	height:100%;
+	scrollbar-color: #c0c0c0 #1d1d1d;
+	scrollbar-width: thin;
 }
 
 #wrapper {
@@ -140,4 +142,19 @@ a {
 
 #filelist {
 	height: 100%;
+	overflow-y: auto;
+	scrollbar-color: #c0c0c0 #1d1d1d;
+	scrollbar-width: thin;
+}
+
+#filelist::-webkit-scrollbar {
+  width: 5px;
+}
+ 
+#filelist::-webkit-scrollbar-thumb {
+  background: #1d1d1d; 
+}
+
+#filelist::-webkit-scrollbar-track {
+  background: #c0c0c0; 
 }
