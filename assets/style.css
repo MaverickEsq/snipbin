@@ -106,7 +106,7 @@ a {
 	padding-top: 0.1em;
 	padding-bottom: 0.2em;
 	font-weight: bold;
-	padding-right: 0.2em;
+	padding-right: 0.3em;
 }
 
 .snippet {
@@ -157,4 +157,8 @@ a {
 
 #filelist::-webkit-scrollbar-track {
   background: #c0c0c0; 
+}
+
+.dir ul {
+	border: 1px solid #1d1d1d;
 }
